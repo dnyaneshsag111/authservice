@@ -1,0 +1,36 @@
+server:
+  port: 8082
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          auth:
+            client-id: auth-realm-client
+            client-secret: rfK4dzeJ9usq5bxFp8HzcE8Qnvts2Md0
+            scope: openid
+            authorization-grant-type: authorization_code
+        provider:
+          auth:
+            issuer-uri: http://localhost:8080/realms/auth
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/auth
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+
+keycloak:
+  realm: auth
+  auth-server-url: http://localhost:8080
+  client-secret: ${spring.security.oauth2.client.registration.auth.client-secret}
+  client-id: ${spring.security.oauth2.client.registration.auth.client-id}
+  hostname: localhost
+  port: 8080
+  useHttps: false
+  auth-url: /realms/${keycloak.realm}
+
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.security.oauth2: DEBUG
